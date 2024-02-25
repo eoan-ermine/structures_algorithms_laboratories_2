@@ -16,3 +16,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 task_0 = "structures_algorithms_laboratories_2.tasks.task_0:__start__"
+task_1 = "structures_algorithms_laboratories_2.tasks.task_1:__start__"
