@@ -1,77 +1,72 @@
-import enum
+class Node:
+    def __init__(self, value=None, prev=None, next=None):
+        self.value = value
+        self.prev = prev
+        self.next = next
 
-class Deque:
-    class Direction(enum.Enum):
-        LEFT = 1
-        RIGHT = 2
 
-    def __init__(self):
-        self.__CHUNK_SIZE = 8
-        self.__chunks = []
-        self.__size = 0
-        self.__left_idx = 0
-        self.__start_chunk = 0
+class Deque:    
+    def __init__(self, arr=[]):
+        self.head = None
+        self.tail = None
+        self.size = 0
 
-        self.__allocate(Deque.Direction.RIGHT)
+        for e in arr:
+            self.push_back(e)
 
-    def __need_allocation(self, direction):
-        if direction == Deque.Direction.LEFT:
-            return self.__left_idx == 0
+    def push_front(self, item):
+        new_node = Node(item)
+
+        if self.head is None:
+            self.tail = new_node
         else:
-            return len(self.__chunks[-1]) == self.__CHUNK_SIZE
+            new_node.next = self.head
+            self.head.prev = new_node
+        
+        self.head = new_node
+        self.size += 1
 
-    def __allocate(self, direction):
-        if direction == Deque.Direction.LEFT:
-            self.__chunks.insert(0, [])
+    def push_back(self, item):
+        new_node = Node(item)
+
+        if self.head is None:
+            self.head = new_node
         else:
-            self.__chunks.append([])
-
-    def __get_chunk(self, idx):
-        return (self.__left_idx + idx) // self.__CHUNK_SIZE
+            new_node.prev = self.tail
+            self.tail.next = new_node
+        
+        self.tail = new_node
+        self.size += 1
     
-    def __get_idx(self, idx):
-        def impl(idx, reverse):
-            idx = (self.__left_idx + idx) % self.__CHUNK_SIZE
-            if reverse:
-                return self.__CHUNK_SIZE - idx - 1
-            else:
-                return idx
+    def pop_front(self):
+        old_first = self.head
+        self.head = self.head.next
+        self.size -= 1
 
-        return impl(idx, self.__get_chunk(idx) < self.__start_chunk)
-
-    def push_front(self, value):
-        if self.__need_allocation(Deque.Direction.LEFT):
-            self.__allocate(Deque.Direction.LEFT)
-            self.__start_chunk += 1
-        if self.__left_idx == 0:
-            self.__left_idx = self.__CHUNK_SIZE - 1
+        if self.head == None:
+            self.tail = None
         else:
-            self.__left_idx = self.__left_idx - 1
-        self.__chunks[0].append(value)
-        self.__size += 1
+            self.head.prev = None
+        
+        return old_first.value
+
+    def pop_back(self):
+        old_last = self.tail
+        self.size -= 1
+        self.tail = old_last.prev
+
+        if self.tail == None:
+            self.head = None
+        else:
+            self.tail.next = None
+
+        return old_last.value
     
-    def pop_front(self, value):
-        self.__chunks[0].pop()
-        self.__size -= 1
-
-    def push_back(self, value):
-        if self.__need_allocation(Deque.Direction.RIGHT):
-            self.__allocate(Deque.Direction.RIGHT)
-        self.__chunks[-1].append(value)
-        self.__size += 1
-
-    def pop_back(self, value):
-        self.__chunks[-1].pop()
-        self.__size -= 1
-
     def front(self):
-        return self.__chunks[0][-1]
+        return self.head.value
     
     def back(self):
-        return self.__chunks[-1][-1]
-
-    def __getitem__(self, idx):
-        return self.__chunks[self.__get_chunk(idx)][self.__get_idx(idx)]
+        return self.tail.value
 
     def __len__(self):
-        return self.__size
+        return self.size
