@@ -1,6 +1,7 @@
 import typer
 
 from ..structures.deque import Deque
+from ..utils import print_list
 
 
 def split(integers):
@@ -24,11 +25,13 @@ def pop_to_str(deque):
     return res
 
 
-def main(filename: str):
+def main(filename: str, output_filename: str):
     with open(filename, "r") as r:
         negatives, positives = split([int(e) for e in r.read().split()])
-        print("Отрицательные:", " ".join([str(e) for e in pop_to_str(negatives)]))
-        print("Положительные:", " ".join([str(e) for e in pop_to_str(positives)]))
+        output_list = [f"Отрицательные: {" ".join([str(e) for e in pop_to_str(negatives)])}", f"Положительные: {" ".join([str(e) for e in pop_to_str(positives)])}"]
+        print_list(output_list)
+        with open(output_filename, "w") as f:
+            print_list(output_list, file=f)
 
 
 def __start__():

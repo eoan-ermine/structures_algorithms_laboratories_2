@@ -1,6 +1,7 @@
 import typer
 
 from ..structures.stack import Stack
+from ..utils import print_list
 
 
 def solve_hanoi(source_tower, dest_tower, temp_tower, logger = None):
@@ -41,11 +42,10 @@ def main(filename: str = "hanoi_setup.txt", output_filename: str = "hanoi_result
         with open(log_filename, "w") as log:
             solve_hanoi(source_tower, dest_tower, temp_tower, log)
 
+        output = [f"n: {n}", f"Source tower: {source_tower}", f"Destination tower: {dest_tower}", f"Temp tower: {temp_tower}"]
+        print_list(output)
         with open(output_filename, "w") as f:
-            print("n: ", n, file=f)
-            print("Source tower:", source_tower, file=f)
-            print("Destination tower:", dest_tower, file=f)
-            print("Temp tower:", temp_tower, file=f)
+            print_list(output, file=f)
 
 
 def __start__():

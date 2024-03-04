@@ -41,6 +41,7 @@ def main(filename: str, output_filename: str):
         lines = merge_sort([e.strip() for e in r.readlines()])
         with open(output_filename, "w") as f:
             while len(lines) != 0:
+                print(lines.front())
                 print(lines.front(), file=f)
                 lines.pop_front()
 

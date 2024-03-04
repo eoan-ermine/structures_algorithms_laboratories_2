@@ -14,13 +14,13 @@ def check_brackets(text):
     return len(s) == 0
 
 
-def main(filename: str):
+def main(filename: str, output_filename: str):
     with open(filename, "r") as r:
         res = check_brackets(r.read())
-        if res:
-            print("Квадоатные скобочки в порядке")
-        else:
-            print("Квадоатные скобочки не в порядке")
+        output = "Квадоатные скобочки в порядке" if res else "Квадоатные скобочки не в порядке"
+        print(output)
+        with open(output_filename, "w") as f:
+            print(output, file=f)
 
 
 def __start__():

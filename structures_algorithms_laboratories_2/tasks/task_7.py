@@ -16,7 +16,9 @@ def main(filename: str, output_filename: str):
         lines = reverse_lines([e.strip() for e in r.readlines()])
         with open(output_filename, "w") as f:
             for e in lines:
+                print(e)
                 print(e, file=f)
+
 
 def __start__():
     typer.run(main)

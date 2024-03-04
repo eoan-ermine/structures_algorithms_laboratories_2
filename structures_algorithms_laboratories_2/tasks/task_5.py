@@ -1,6 +1,7 @@
 import typer
 
 from ..structures.stack import Stack
+from ..utils import print_list
 
 
 def split(text):
@@ -28,12 +29,13 @@ def pop_to_str(stack):
     return res
 
 
-def main(filename: str):
+def main(filename: str, output_filename: str):
     with open(filename, "r") as r:
         letters, digits, others = split(r.read())
-        print("Буквы: ", pop_to_str(letters))
-        print("Цифры: ", pop_to_str(digits))
-        print("Остальное: ", pop_to_str(others))
+        output_list = [f"Буквы: {pop_to_str(letters)}", f"Цифры: {pop_to_str(digits)}", f"Остальное: {pop_to_str(others)}"]
+        print_list(output_list)
+        with open(output_filename, "w") as f:
+            print_list(output_list, file=f)
 
 
 def __start__():

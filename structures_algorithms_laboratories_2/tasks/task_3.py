@@ -14,13 +14,13 @@ def check_parens(text):
     return len(s) == 0
 
 
-def main(filename: str):
+def main(filename: str, output_filename: str):
     with open(filename, "r") as r:
         res = check_parens(r.read())
-        if res:
-            print("Скобочки в порядке")
-        else:
-            print("Скобочки не в порядке")
+        output = "Скобочки в порядке" if res else "Скобочки не в порядке"
+        print(output)
+        with open(output_filename, "w") as f:
+            print(output, file=f)
 
 
 def __start__():

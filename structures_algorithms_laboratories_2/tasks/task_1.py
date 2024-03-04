@@ -29,6 +29,7 @@ def main(filename: str, output_filename: str):
         cypher = r.read()
         decypher = decrypt(cypher) 
         with open(output_filename, "w") as f:
+            print(decypher)
             print(decypher, file=f)
 
 
